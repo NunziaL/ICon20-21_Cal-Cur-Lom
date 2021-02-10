@@ -1,0 +1,2 @@
+track,artist,uri,danceability,energy,key,loudness,mode,speechiness,acousticness,instrumentalness,liveness,valence,tempo,duration_ms,time_signature,chorus_hit,sections, decade
+Names or Faces,Tipling Rock,spotify:track:4BSytfGTrB2LUr1bOQrNoQ,0.705,0.786,6,-6.034,1,0.0368,0.109,0.000159,0.39,0.932,126.035,174187,4,33.38266,9,2010
