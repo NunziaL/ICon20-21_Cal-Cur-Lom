@@ -11,6 +11,8 @@ import pandas as pd
 import joblib
 import os
 
+import pomegranate as pg
+
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
@@ -20,6 +22,8 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import LinearSVC, SVC
 from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+from sklearn.cluster import *
+
 
 import warnings
 warnings.filterwarnings(action='ignore')
@@ -121,7 +125,7 @@ lst = {'danceability':[feature['danceability']],
        'time_signature':[feature['time_signature']],
        'chorus_hit':[ analysis["sections"][2]['start']],
        'sections':[len(analysis["sections"])], 
-       'decade':[1980]}
+       'decade':[2000]}
 X = pd.DataFrame(lst)
 
 filename ="                   Logistic Regression"+'.sav'
@@ -136,12 +140,37 @@ else:
         result = model.predict(X)
         print(name + " " + str(result[0]))
 
+def suggerimenti(canzone, data):
     
+    data = data.copy()
+    canzone[['Target']] =  1 
+    # Split df into X and y
+    X = data.drop(['track', 'artist', 'uri'], axis=1)
     
+    kmeans = KMeans(n_clusters=1000, random_state=0).fit(X)
+    prediction = kmeans.predict(canzone)
+    n_cluster_predetto = prediction[0]
+    cluster_predetto = kmeans.cluster_centers_[n_cl5uster_predetto]
     
+    songSugg = []
+    j=0
+    for i in range(10):
+        while True:
+            if kmeans.labels_[j] == prediction[0]:
+                songSugg.append(j)
+                j = j+1
+                break
+            j = j+1
+    return songSugg
     
-    
-    
-    
-    
-    
+
+print("La canzone che hai inserito appartiene a questo cluster: ")
+songSugg = suggerimenti(X, data)
+for i in range(0, len(songSugg)):
+    print(data.iloc[songSugg[i]][['track', 'artist']])
+
+
+
+
+
+
