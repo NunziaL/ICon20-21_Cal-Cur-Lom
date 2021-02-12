@@ -72,9 +72,9 @@ def calculate_class_probabilities(summaries, row):
 def classificatore_bayesiano(X):
     summaries = summarize_by_class()
     probabilities = calculate_class_probabilities(summaries, X)
-    anno=0
+    annoProb=0
     for key in probabilities:
-        if(probabilities[key]>anno):
-            anno=probabilities[key]
-            X['decade']=key
-    return X
+        if(probabilities[key]>annoProb):
+            annoProb=probabilities[key]
+            anno=key
+    return anno
