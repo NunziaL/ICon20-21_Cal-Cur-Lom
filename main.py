@@ -31,10 +31,13 @@ while(True):
     ricerca = input("Dammi il titolo della canzone:")
     #prendere informazioni sulla canzone da Spotify
     song=canzoneDaSpotify(ricerca)
+    track_predic = song.iloc[0]['track']
+    artist_predic = song.iloc[0]['artist']
     if(type(song)!=int):
         break
 
 #prepara la canzone alla predizione
+
 songPredic=song.drop(['track', 'artist', 'uri'], axis=1)
 
 #Classificazione canzone nella decade con classificatore Bayesiano
@@ -47,13 +50,37 @@ a=songPredic['decade']
 songPredic=songPredic.drop('decade', axis=1)
 songPredic['target']=1
 songPredic['decade']=a
+print()
 print("Canzoni simili: ")
 songSugg = suggerimenti(songPredic, data)
 for i in range(0, len(songSugg)):
-    print(songSugg[i][['track', 'artist']])
+    counter = i+1
+    name_similar = songSugg[i]['track']
+    artist_similar = songSugg[i]['artist']
+    if (track_predic == name_similar) and (artist_predic == artist_similar):
+        counter = counter-1
+        continue
+    else:
+        print(counter,". " + name_similar + " - " + artist_similar)
+    
+    
 
 
+def researchByFeatures(inputQuery):
+    print("Inserire una query:")
+    print("Seguire il seguente formato: 'key == 1' and 'decade == 1990' or 'danceability == 0.7'")
+    data.query(inputQuery)
+    return data.query(inputQuery)
 
+print("Inserire una query:")
+print("Seguire il seguente formato: 'key == 1' and 'decade == 1990' or 'danceability == 0.7'")
+inputQuery = input()
+resultQuery = data.query(inputQuery)
+"""
+Tipi di query 
+- data[data['key']==1]
+- data[(data['key']==1) & (data['decade']==1990)]
+- data.query('key == 1' and 'decade == 1990' and 'danceability == 0.7')
 
-
+"""
 

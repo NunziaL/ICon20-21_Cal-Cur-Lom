@@ -58,8 +58,6 @@ def previsione(data,song):
         "Logistic Regression": LogisticRegression(),
         "K-Nearest Neighbors": KNeighborsClassifier(),
         "Decision Tree": DecisionTreeClassifier(),
-        "Support Vector Machine (Linear Kernel)": LinearSVC(), 
-        "Support Vector Machine (RBF Kernel)": SVC(),
         "Neural Network": MLPClassifier(),
         "Random Forest": RandomForestClassifier(),
         "Gradient Boosting": GradientBoostingClassifier()
