@@ -42,6 +42,7 @@ songPredic=song.drop(['track', 'artist', 'uri'], axis=1)
 
 #Classificazione canzone nella decade con classificatore Bayesiano
 songPredic['decade']= classificatore_bayesiano(songPredic)
+print("La decade di appartenenza della canzone è: ", int(songPredic.iloc[0]['decade']))
 
 #previsione per ogni tipo di modello
 result=previsione(data,songPredic)
@@ -64,23 +65,4 @@ for i in range(0, len(songSugg)):
         print(counter,". " + name_similar + " - " + artist_similar)
     
     
-
-
-def researchByFeatures(inputQuery):
-    print("Inserire una query:")
-    print("Seguire il seguente formato: 'key == 1' and 'decade == 1990' or 'danceability == 0.7'")
-    data.query(inputQuery)
-    return data.query(inputQuery)
-
-print("Inserire una query:")
-print("Seguire il seguente formato: 'key == 1' and 'decade == 1990' or 'danceability == 0.7'")
-inputQuery = input()
-resultQuery = data.query(inputQuery)
-"""
-Tipi di query 
-- data[data['key']==1]
-- data[(data['key']==1) & (data['decade']==1990)]
-- data.query('key == 1' and 'decade == 1990' and 'danceability == 0.7')
-
-"""
 
