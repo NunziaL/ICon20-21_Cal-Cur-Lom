@@ -7,7 +7,6 @@ import os
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
@@ -52,7 +51,7 @@ def train_model(name,model,X_train, X_test, y_train, y_test):
     print(name + ": {:.2f}%".format(model.score(X_test, y_test) * 100))
 
     #carica modello su file
-    filename = name+'.sav'
+    filename = 'data/' + name+'.sav'
     joblib.dump(model,filename)
     return model
 
@@ -80,11 +79,13 @@ def previsione(data,song):
         #Si controlla se il file corrispondente al modello nel dizionario esiste al fine di allenarlo o no.
         filename = 'data/' + name + '.sav'
         if(os.path.exists(filename)):
+            esito = "exists"
             model = joblib.load('data/' + name +'.sav')
             result[name] = model.predict(song)[0]
             print(name + " " + str(result[name]))
         else:
+            esito = "not_exists"
             model = train_model(name,model,X_train, X_test, y_train, y_test)
             result[name] = model.predict(song)[0]
             print(name + " " + str(result[name]))
-    return result
+    return esito, result

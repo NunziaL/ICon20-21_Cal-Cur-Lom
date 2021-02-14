@@ -59,7 +59,7 @@ class MainWindow(QtWidgets.QMainWindow):
         elif self.radioButton_2.isChecked():
 
             #Previsione per ogni tipo di modello
-            result=previsione(data,songPredic)
+            esito, result=previsione(data,songPredic)
             #Aggiunge valore alla colonna target in base al valore preponderante nelle predizioni
             count1 = 0
             count0 = 0
@@ -74,6 +74,11 @@ class MainWindow(QtWidgets.QMainWindow):
             else:
                 song['target'] = 0
                 self.textEdit.insertPlainText("La canzone è un FLOP.\n")
+            
+            if esito == "not_exists":
+                self.textEdit.insertPlainText("File non trovati, eseguo fase di training!\n")
+            else:
+                self.textEdit.insertPlainText("File trovati:\n")
             self.textEdit.insertPlainText("Le previsioni sono:\n")
             for key in result:
                 self.textEdit.insertPlainText(key + ":   " + str(result[key]) + "\n")
