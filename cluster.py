@@ -1,15 +1,22 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Feb 12 21:52:08 2021
 
-@author: lomon
-"""
 from sklearn.cluster import KMeans
 import joblib
 import os
 
+"""
+Vengono creati 4000 cluster con l'algoritmo kmeans a partire dal dataset.
+Sono eliminate le colonne 'track', 'artist', 'uri' in quanto non necessarie 
+all'elaborazione del risultato. 
+I cluster vengono salvati su un file .sav, in modo tale da non doverli creare 
+ogni volta che il programma viene eseguito.
+"""
 def creazioneCluster(data):
+    
+    #Eliminazione degli attributi non necessari
     train = data.drop(['track', 'artist', 'uri'], axis=1)
+    
+    #Controllo se cluster già presenti su file
     if(os.path.exists('data/cluster.sav')):
         kmeans=joblib.load('data/cluster.sav')
     else:
@@ -17,15 +24,19 @@ def creazioneCluster(data):
         joblib.dump(kmeans,'data/cluster.sav')
     return kmeans
 
+"""
+Sono restituite le canzoni con simili caratterstiche a quella inserita dall'utente.
+Viene predetto il cluster della canzone data in input, successivamente vengono 
+trovate nel dataset le canzoni che appartengono allo stesso cluster e restituite in output
+"""
 def suggerimenti(song, data):   
-    
     kmeans=creazioneCluster(data)
-    prediction = kmeans.predict(song)
     
-    #cluster della canzone in input
+    #Predizione del cluster a cui appartiene la canzone
+    prediction = kmeans.predict(song)
     cluster_predetto = kmeans.cluster_centers_[prediction[0]]
     
-    #selezione canzoni da suggerire
+    #Selezione canzoni da suggerire
     songSugg = []
     for i in range(len(data)):
         if kmeans.labels_[i] == prediction[0]:
