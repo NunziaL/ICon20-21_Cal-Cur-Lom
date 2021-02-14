@@ -42,6 +42,9 @@ class MainWindow(QtWidgets.QMainWindow):
         if song is None :
             self.textEdit.insertPlainText("Prova a cercare qualcos'altro.")
             return
+        elif song is -1:
+            self.textEdit.insertPlainText("Prova a cercare qualcos'altro.")
+            return
         self.pushButton.setEnabled(False) 
         
         #Prepara la canzone alla predizione eliminando gli attributi non necessari
