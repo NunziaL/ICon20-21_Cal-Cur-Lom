@@ -17,11 +17,11 @@ def creazioneCluster(data):
     train = data.drop(['track', 'artist', 'uri'], axis=1)
     
     #Controllo se cluster già presenti su file
-    if(os.path.exists('data/cluster.sav')):
+    if(os.path.exists('data/Cluster.sav')):
         kmeans=joblib.load('data/cluster.sav')
     else:
         kmeans = KMeans(n_clusters=4000, random_state=0).fit(train)
-        joblib.dump(kmeans,'data/cluster.sav')
+        joblib.dump(kmeans,'data/Cluster.sav')
     return kmeans
 
 """
@@ -34,7 +34,6 @@ def suggerimenti(song, data):
     
     #Predizione del cluster a cui appartiene la canzone
     prediction = kmeans.predict(song)
-    cluster_predetto = kmeans.cluster_centers_[prediction[0]]
     
     #Selezione canzoni da suggerire
     songSugg = []
