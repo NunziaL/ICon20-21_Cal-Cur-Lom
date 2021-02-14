@@ -19,7 +19,7 @@ def canzoneDaSpotify(ricerca):
     #trova la canzone dal titolo. limit è il numero di risultati
     songSp = sp.search(ricerca, limit=1, type="track")
     if(songSp['tracks']['items']==[]):
-        return -1
+        return None
     else:
         #prende l'URI della canzone
         uriSong = songSp['tracks']['items'][0]['uri']

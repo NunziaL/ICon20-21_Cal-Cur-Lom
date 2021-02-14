@@ -41,23 +41,20 @@ def preprocess_inputs(df):
 
 
 """ 
-Viene effettuata la fase di training dei modelli
+Viene effettuata la fase di training del modello
 """
-def train_model(name,model,X_train, X_test, y_train, y_test):
+def train_model(name,model,X_train,X_test, y_train, y_test):
     
     model.fit(X_train, y_train)
-    print(name + " trained.")
-    
-    print(name + ": {:.2f}%".format(model.score(X_test, y_test) * 100))
-
+    score= name + str(": {:.2f}%".format(model.score(X_test, y_test) * 100)) + "\n"
     #carica modello su file
     filename = 'data/' + name+'.sav'
     joblib.dump(model,filename)
-    return model
+    return model,score
 
 
 """
-Viene predetto per ogni modella se la canzone inserita in input dall'utente è una hit oppure no.
+Viene predetto per ogni modello se la canzone inserita in input dall'utente è una hit oppure no.
 Se la canzone è una hit la funzione  di predizione restituirà come output 1, altrimenti 0 in base alle loro probabilità.
 """
 def previsione(data,song):
@@ -75,17 +72,19 @@ def previsione(data,song):
     result=dict()
     
     #Viene effettuata la predizione per ogni modello attraverso la funzione predict()
+    score=""
     for name, model in models.items(): 
         #Si controlla se il file corrispondente al modello nel dizionario esiste al fine di allenarlo o no.
         filename = 'data/' + name + '.sav'
         if(os.path.exists(filename)):
-            esito = "exists"
             model = joblib.load('data/' + name +'.sav')
             result[name] = model.predict(song)[0]
-            print(name + " " + str(result[name]))
         else:
-            esito = "not_exists"
-            model = train_model(name,model,X_train, X_test, y_train, y_test)
+            model,acc = train_model(name,model,X_train,X_test, y_train, y_test)
             result[name] = model.predict(song)[0]
-            print(name + " " + str(result[name]))
-    return esito, result
+            score=score+acc
+    return result,score
+ 
+"""
+Viene calcolata l'accuratezza per ogni modello grazie a X_test e y_test.
+"""
